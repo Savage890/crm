@@ -4,6 +4,7 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { supabase, supabaseConfigured } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import { useEffect } from 'react'
+import { HiOutlineCog } from 'react-icons/hi'
 
 export default function Login() {
     const { user } = useAuth()
@@ -30,11 +31,11 @@ export default function Login() {
                 </div>
                 {!supabaseConfigured ? (
                     <div className="setup-notice">
-                        <h3>⚙️ Setup Required</h3>
+                        <h3><HiOutlineCog size={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />Setup Required</h3>
                         <p>Create a <code>.env</code> file in the project root with your Supabase credentials:</p>
                         <pre>{`VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key`}</pre>
-                        <p className="setup-hint">Get these from your <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">Supabase Dashboard</a> → Settings → API</p>
+                        <p className="setup-hint">Get these from your <a href="https://supabase.com/dashboard" target="_blank" rel="noopener noreferrer">Supabase Dashboard</a> &rarr; Settings &rarr; API</p>
                     </div>
                 ) : (
                     <Auth

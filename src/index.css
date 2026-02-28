@@ -812,8 +812,15 @@ a {
     background: rgba(255, 255, 255, 0.03);
 }
 
-.activity-icon {
-    font-size: 18px;
+.activity-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: rgba(124, 58, 237, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
     flex-shrink: 0;
 }
 
@@ -835,6 +842,7 @@ a {
     font-size: 11px;
     color: var(--text-muted);
     margin-top: 2px;
+    text-transform: capitalize;
 }
 
 /* ===========================================
@@ -1142,6 +1150,9 @@ a {
 }
 
 .filter-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     padding: 8px 14px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
@@ -1250,6 +1261,9 @@ a {
 }
 
 .activity-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-size: 11px;
     text-transform: capitalize;
     color: var(--text-muted);

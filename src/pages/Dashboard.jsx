@@ -6,7 +6,12 @@ import {
     HiOutlineClipboardList,
     HiOutlineTrendingUp,
     HiOutlineClock,
-    HiOutlineCheckCircle
+    HiOutlineCheckCircle,
+    HiOutlinePhone,
+    HiOutlineMail,
+    HiOutlineCalendar,
+    HiOutlineDocumentText,
+    HiOutlineChat
 } from 'react-icons/hi'
 
 export default function Dashboard() {
@@ -94,15 +99,12 @@ export default function Dashboard() {
         lost: '#ef4444'
     }
 
-    const getActivityIcon = (type) => {
-        switch (type) {
-            case 'call': return '📞'
-            case 'email': return '📧'
-            case 'meeting': return '🤝'
-            case 'task': return '✅'
-            case 'note': return '📝'
-            default: return '📋'
-        }
+    const activityIcons = {
+        call: HiOutlinePhone,
+        email: HiOutlineMail,
+        meeting: HiOutlineCalendar,
+        task: HiOutlineCheckCircle,
+        note: HiOutlineDocumentText
     }
 
     if (loading) {
@@ -116,8 +118,10 @@ export default function Dashboard() {
     return (
         <div className="dashboard-page">
             <div className="page-header">
-                <h1>Dashboard</h1>
-                <p className="page-subtitle">Welcome back! Here's your CRM overview.</p>
+                <div>
+                    <h1>Dashboard</h1>
+                    <p className="page-subtitle">Welcome back! Here's your CRM overview.</p>
+                </div>
             </div>
 
             {/* KPI Cards */}
@@ -172,17 +176,22 @@ export default function Dashboard() {
                         </div>
                     ) : (
                         <div className="activity-list">
-                            {recentActivities.map(activity => (
-                                <div key={activity.id} className="activity-item">
-                                    <span className="activity-icon">{getActivityIcon(activity.type)}</span>
-                                    <div className="activity-details">
-                                        <span className="activity-title">{activity.title}</span>
-                                        <span className="activity-meta">
-                                            {activity.type} • {new Date(activity.created_at).toLocaleDateString()}
-                                        </span>
+                            {recentActivities.map(activity => {
+                                const IconComponent = activityIcons[activity.type] || HiOutlineClipboardList
+                                return (
+                                    <div key={activity.id} className="activity-item">
+                                        <div className="activity-icon-wrap">
+                                            <IconComponent size={16} />
+                                        </div>
+                                        <div className="activity-details">
+                                            <span className="activity-title">{activity.title}</span>
+                                            <span className="activity-meta">
+                                                {activity.type} &middot; {new Date(activity.created_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
                     )}
                 </div>

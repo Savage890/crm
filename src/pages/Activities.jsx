@@ -7,16 +7,21 @@ import {
     HiOutlineTrash,
     HiOutlineFilter,
     HiOutlineCheck,
-    HiOutlineClipboardList
+    HiOutlineClipboardList,
+    HiOutlinePhone,
+    HiOutlineMail,
+    HiOutlineCalendar,
+    HiOutlineCheckCircle,
+    HiOutlineDocumentText
 } from 'react-icons/hi'
 
 const TYPES = [
-    { id: 'all', label: 'All' },
-    { id: 'task', label: '✅ Task' },
-    { id: 'call', label: '📞 Call' },
-    { id: 'email', label: '📧 Email' },
-    { id: 'meeting', label: '🤝 Meeting' },
-    { id: 'note', label: '📝 Note' },
+    { id: 'all', label: 'All', icon: HiOutlineFilter },
+    { id: 'task', label: 'Task', icon: HiOutlineCheckCircle },
+    { id: 'call', label: 'Call', icon: HiOutlinePhone },
+    { id: 'email', label: 'Email', icon: HiOutlineMail },
+    { id: 'meeting', label: 'Meeting', icon: HiOutlineCalendar },
+    { id: 'note', label: 'Note', icon: HiOutlineDocumentText },
 ]
 
 const emptyActivity = {
@@ -130,12 +135,12 @@ export default function Activities() {
 
     const isOverdue = (a) => !a.completed && a.due_date && new Date(a.due_date) < now
 
-    const typeEmoji = {
-        task: '✅',
-        call: '📞',
-        email: '📧',
-        meeting: '🤝',
-        note: '📝'
+    const typeIcons = {
+        task: HiOutlineCheckCircle,
+        call: HiOutlinePhone,
+        email: HiOutlineMail,
+        meeting: HiOutlineCalendar,
+        note: HiOutlineDocumentText
     }
 
     if (loading) {
@@ -163,7 +168,8 @@ export default function Activities() {
                             className={`filter-tab ${filter === t.id ? 'active' : ''}`}
                             onClick={() => setFilter(t.id)}
                         >
-                            {t.label}
+                            <t.icon size={14} />
+                            <span>{t.label}</span>
                         </button>
                     ))}
                 </div>
@@ -189,46 +195,51 @@ export default function Activities() {
                 </div>
             ) : (
                 <div className="activities-list">
-                    {filtered.map(activity => (
-                        <div
-                            key={activity.id}
-                            className={`activity-card ${activity.completed ? 'completed' : ''} ${isOverdue(activity) ? 'overdue' : ''}`}
-                        >
-                            <button
-                                className={`check-btn ${activity.completed ? 'checked' : ''}`}
-                                onClick={() => toggleComplete(activity)}
+                    {filtered.map(activity => {
+                        const TypeIcon = typeIcons[activity.type] || HiOutlineClipboardList
+                        return (
+                            <div
+                                key={activity.id}
+                                className={`activity-card ${activity.completed ? 'completed' : ''} ${isOverdue(activity) ? 'overdue' : ''}`}
                             >
-                                {activity.completed && <HiOutlineCheck size={14} />}
-                            </button>
+                                <button
+                                    className={`check-btn ${activity.completed ? 'checked' : ''}`}
+                                    onClick={() => toggleComplete(activity)}
+                                >
+                                    {activity.completed && <HiOutlineCheck size={14} />}
+                                </button>
 
-                            <div className="activity-card-body">
-                                <div className="activity-card-top">
-                                    <span className="activity-type-badge">{typeEmoji[activity.type] || '📋'} {activity.type}</span>
-                                    {isOverdue(activity) && <span className="overdue-badge">Overdue</span>}
-                                </div>
-                                <h4 className="activity-card-title">{activity.title}</h4>
-                                {activity.description && (
-                                    <p className="activity-card-desc">{activity.description}</p>
-                                )}
-                                <div className="activity-card-meta">
-                                    {activity.due_date && (
-                                        <span>Due: {new Date(activity.due_date).toLocaleDateString()}</span>
+                                <div className="activity-card-body">
+                                    <div className="activity-card-top">
+                                        <span className="activity-type-badge">
+                                            <TypeIcon size={12} /> {activity.type}
+                                        </span>
+                                        {isOverdue(activity) && <span className="overdue-badge">Overdue</span>}
+                                    </div>
+                                    <h4 className="activity-card-title">{activity.title}</h4>
+                                    {activity.description && (
+                                        <p className="activity-card-desc">{activity.description}</p>
                                     )}
-                                    {activity.contact_name && <span>Contact: {activity.contact_name}</span>}
-                                    {activity.deal_name && <span>Deal: {activity.deal_name}</span>}
+                                    <div className="activity-card-meta">
+                                        {activity.due_date && (
+                                            <span>Due: {new Date(activity.due_date).toLocaleDateString()}</span>
+                                        )}
+                                        {activity.contact_name && <span>Contact: {activity.contact_name}</span>}
+                                        {activity.deal_name && <span>Deal: {activity.deal_name}</span>}
+                                    </div>
+                                </div>
+
+                                <div className="action-btns">
+                                    <button className="icon-btn" onClick={() => openEdit(activity)} title="Edit">
+                                        <HiOutlinePencil size={16} />
+                                    </button>
+                                    <button className="icon-btn danger" onClick={() => handleDelete(activity.id)} title="Delete">
+                                        <HiOutlineTrash size={16} />
+                                    </button>
                                 </div>
                             </div>
-
-                            <div className="action-btns">
-                                <button className="icon-btn" onClick={() => openEdit(activity)} title="Edit">
-                                    <HiOutlinePencil size={16} />
-                                </button>
-                                <button className="icon-btn danger" onClick={() => handleDelete(activity.id)} title="Delete">
-                                    <HiOutlineTrash size={16} />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             )}
 
