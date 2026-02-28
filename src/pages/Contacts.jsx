@@ -8,7 +8,8 @@ import {
     HiOutlineSearch,
     HiOutlineMail,
     HiOutlinePhone,
-    HiOutlineOfficeBuilding
+    HiOutlineOfficeBuilding,
+    HiOutlineUserGroup
 } from 'react-icons/hi'
 
 const emptyContact = {
